@@ -4,8 +4,38 @@ import './App.css';
 
 class App extends Component {
   render() {
+    
+    const list = ["User","Password"];
+    
     return (
-      <div className="App">
+     <div className="container"> 
+        <div class="jumbotron">
+          <div className="App">  
+              <h1>Chat App</h1>
+                  <h2>{ 
+                      list.map( item=> {
+                          return (
+                            <div>
+                              <table witdh="400">
+                                <tr>{item}
+                                  <input name="name"></input>
+                                </tr>
+                              </table>
+                            </div>  
+                          );
+                      })
+                  }
+                </h2> 
+          </div>
+        </div>
+     </div>
+		);
+  }
+}
+
+export default App;
+
+/* <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <p>
@@ -21,8 +51,4 @@ class App extends Component {
           </a>
         </header>
       </div>
-    );
-  }
-}
-
-export default App;
+ */
