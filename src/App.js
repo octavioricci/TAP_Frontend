@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
-import Login from "./components/Login";
 import Navigation from "./components/Navigation";
+import Login from "./components/Login";
+import Principal from "./components/Principal";
+import NavBar from "./components/NavBar";
+import Message from "./components/Message";
+import SendMessage from "./components/SendMessage";
+import Users from "./components/Users";
 import logo from './logo.svg';
 import './App.css';
 
@@ -10,16 +15,19 @@ import './App.css';
 
 class App extends Component {
   
-
+  
   render() {
     
     return (
     
       <Router>
         <React.Fragment>
+          <NavBar />
           <Navigation />
             <Switch>
-              <Route path="/Login" component={Login} />
+              <Route path="/" component={Login} exact />
+              <Route path="/Principal" component={Principal} />
+              <Route path="/:id" render={() => <p>Este es el id</p>} />
             </Switch>
         </React.Fragment> 
       </Router>
