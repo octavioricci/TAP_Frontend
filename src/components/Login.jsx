@@ -20,6 +20,9 @@ class Login extends Component {
    
    const name = e.target.name;
    const value = e.target.value;
+   // Acá asigno en el state, el email y password que lo mandó como callback a validateFields
+   // Cuando completo en el input email: {[name]: value} == email: octavioricci@gmail.com
+   // Cuando completo en el input password: {[name]: value} == password: Banco123
    this.setState(
       {[name]: value}, 
       () => {this.validateFields(name,value)});
@@ -62,7 +65,29 @@ class Login extends Component {
   }
   
   handleAccess = (e) =>{
+    
+    var data = {
+      'email': this.state.email,
+      'password': this.state.password
+    } 
+
+    console.log(JSON.stringify(data));
+    
+    // Si está el email y password validado a nivel cliente, realizo la consulta a la api /users/login
     if(!e.disabled){
+          fetch('https://tap-octavioricci820054.codeanyapp.com/api/users/login',{
+                 method: 'POST',
+                 headers: {'Accept': 'application/json','Content-Type': 'application/json'},
+                 body: JSON.stringify(data)
+          })
+          .then((response)=>response.text())
+            .then((responseText) => {
+                alert(responseText);
+          })
+          .catch((error)=>{
+              alert(error);
+          });
+            
       this.props.history.push('/Principal');
     }
   }

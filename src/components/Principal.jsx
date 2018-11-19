@@ -9,9 +9,9 @@ class Principal extends Component {
         return (
           <React.Fragment>
             <div className="jumbotron">
-              <div classNameName="container">
+              <div className="container">
                       <h2>Chat Dashboard</h2>
-                      <div classNameName="row">
+                      <div className="row">
                          <Users />
                          <Message />
                          <SendMessage />    
