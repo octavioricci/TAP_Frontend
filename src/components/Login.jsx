@@ -64,31 +64,36 @@ class Login extends Component {
       this.setState({formValid: this.state.emailValid && this.state.passwordValid});
   }
   
-  handleAccess = (e) =>{
+  handleAccess = (e) => {
     
     var data = {
       'email': this.state.email,
       'password': this.state.password
     } 
 
-    console.log(JSON.stringify(data));
-    
+        
     // Si está el email y password validado a nivel cliente, realizo la consulta a la api /users/login
     if(!e.disabled){
-          fetch('https://tap-octavioricci820054.codeanyapp.com/api/users/login',{
+        
+      
+        fetch('https://tap-octavioricci820054.codeanyapp.com/api/users/login',{
                  method: 'POST',
                  headers: {'Accept': 'application/json','Content-Type': 'application/json'},
                  body: JSON.stringify(data)
-          })
-          .then((response)=>response.text())
-            .then((responseText) => {
-                alert(responseText);
-          })
-          .catch((error)=>{
-              alert(error);
-          });
-            
-      this.props.history.push('/Principal');
+                })
+                .then((response) => {
+                   if(!response.ok) throw new Error(response.status);
+                })
+                .then((data)=> {
+                  console.log("This", this.props.history);
+                 
+                  //that.props.history.push('/Principal');	 
+                 })
+                .catch((error) => {
+                    alert('error:' +  error);
+                });
+      
+          this.props.history.push('/Principal');
     }
   }
 

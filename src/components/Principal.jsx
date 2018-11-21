@@ -4,6 +4,16 @@ import Message from './Message';
 import SendMessage from './SendMessage'; 
 
 class Principal extends Component {
+  
+  constructor(props){
+    super(props);
+    
+  }
+ 
+  handleSendMessage = () => {
+    console.log("Handle Send message");
+  }
+  
   render(){
     
         return (
@@ -13,8 +23,10 @@ class Principal extends Component {
                       <h2>Chat Dashboard</h2>
                       <div className="row">
                          <Users />
+                         <hr/>
                          <Message />
-                         <SendMessage />    
+                         <hr/>
+                         <SendMessage onSendMessage={this.handleSendMessage}  />    
                       </div>
                 </div>
              </div>

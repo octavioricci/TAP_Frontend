@@ -8,6 +8,7 @@ class Users extends Component {
         items: [],
         isLoaded: false
      }
+     
    }
     
    componentDidMount(){
@@ -25,6 +26,7 @@ class Users extends Component {
   
   
   render() {
+        
         var { items,isLoaded} = this.state;
       
         if(!isLoaded){
@@ -33,7 +35,7 @@ class Users extends Component {
       
         else{
             return(
-
+            
             <React.Fragment>
               <div className="col-md-4" styles={{'background-color':'pink', height:'150px'}}>
                          <h3>Users</h3>
@@ -44,6 +46,7 @@ class Users extends Component {
                                 </li>
                               ))}
                             </ul>
+                
               </div>
             </React.Fragment>
             ); 
