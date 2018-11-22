@@ -26,7 +26,10 @@ class App extends Component {
         formValid:false,
         from: '',
         to:'',
-        message:''
+        message:'',
+        userMessage:'',
+        receivedMessages:'',
+        usersOnline:''
       }
   }
   
@@ -89,7 +92,7 @@ class App extends Component {
     // Si está el email y password validado a nivel cliente, realizo la consulta a la api /users/login
     if(!e.disabled){
         
-         fetch('http://tap-octavioricci820054.codeanyapp.com/api/users/login',{
+         fetch('https://tap-octavioricci820054.codeanyapp.com/api/users/login',{
                  method: 'POST',
                  headers: {'Accept': 'application/json','Content-Type': 'application/json'},
                  body: JSON.stringify(data)
@@ -103,28 +106,7 @@ class App extends Component {
           });
       
       
-      /*
-        fetch('https://tap-octavioricci820054.codeanyapp.com:8080/api/users/login',{
-                 method: 'POST',
-                 headers: {'Accept': 'application/json',
-                 'Content-Type': 'application/json',
-                 'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS'
-                 },
-                 body: JSON.stringify(data)
-                })
-                .then((response) => {
-                   if(!response.ok) throw new Error(response.status);
-                })
-                .then((data)=> {
-                  console.log("This", this.props.history);
-                 
-                  
-                 })
-                .catch((error) => {
-                    alert('error:' +  error);
-                });
-      */
-          
+               
      }
     }
   
@@ -151,33 +133,90 @@ class App extends Component {
       'message': message
     } 
      
+  
+     
      console.log(JSON.stringify(data));
-    fetch('https://tap-octavioricci820054.codeanyapp.com/api/messages',{
+     fetch('https://tap-octavioricci820054.codeanyapp.com/api/messages',{
                  method: 'POST',
                  headers: {'Accept': 'application/json',
                            'Content-Type': 'application/json',
                            'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
-                           'Authorization':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViYWJjZGE5ZWE3MTJlMDM2MjJiNmM2MSIsImlhdCI6MTU0MjkxNDAyMiwiZXhwIjoxNTQyOTIwMDIyfQ.uaFC9nKww5arOwI4aWWBHhmrz-55yGBAF83eEFv7O9k'
+                           'Authorization':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViYWJjZGE5ZWE3MTJlMDM2MjJiNmM2MSIsImlhdCI6MTU0MjkyOTA1NiwiZXhwIjoxNTQyOTM1MDU2fQ.hkYfdyMc1iteNV2XtwuImPPC9SR-65J5nD0aIqCo46g'
                           },
                             
                  body: JSON.stringify(data)
                 })
-                .then((response) => {
+                 .then((response)=>response.text())
+                      .then((responseText) => {
+                          alert(responseText);
+                          
+                    })
+                    .catch((error)=>{
+                        alert(error);
+                    });
+                /*.then((response) => {
                    if(!response.ok) throw new Error(response.status);
                 })
                 .then((data)=> {
-                  console.log("This", this.props.history);
+                  alert(data);
                  
                   
                  })
                 .catch((error) => {
                     alert('error:' +  error);
-                });
-      
-     
-     
+                });*/
+    }
+  
+  
+         handleUserMessage = (e) => {
+              this.setState({userMessage:e.target.value});
+          }
+        
+        handleReceivedMessages = (e) => {
+          this.setState({receivedMessages: e.target.value})
+        }
+         
+         
+        handleUserReceivedMessage = () => {
+            const user = this.state.userMessage;
+            
+            fetch('https://tap-octavioricci820054.codeanyapp.com/api/mymessages',{
+                 method: 'GET',
+                 headers: {'Accept': 'application/json','Content-Type': 'application/json','Authorization':user},
+                  })
+                    .then((response)=>response.text())
+                      .then((responseText) => {
+                          alert(responseText);
+                          this.setState({receivedMessages:responseText});
+                    })
+                    .catch((error)=>{
+                        alert(error);
+                    });
+          
+          
+             
+          }
+        
+          handleUsersOnline = () => {
+            
+            fetch('https://tap-octavioricci820054.codeanyapp.com/api/users/login',{
+                 method: 'GET',
+                 headers: {'Accept': 'application/json','Content-Type': 'application/json'},
+                  })
+                    .then((response)=>response.text())
+                      .then((responseText) => {
+                          alert(responseText);
+                         
+                    })
+                    .catch((error)=>{
+                        alert(error);
+                    });
+          
+            
+          }
+        
     
-  }
+  
   
   render() {
         
@@ -212,7 +251,8 @@ class App extends Component {
                   <div className="col-6 mx-auto" styles={{'background-color':'pink', height:'150px'}}>
                     <div className="jumbotron">
                            <h3>Users</h3>
-                             
+                           <button type="submit" className="usersOnlineButton" onClick={this.handleUsersOnline}>View Users Online</button>
+                           <textarea class="form-control" id="usersOnline" rows="3" value={this.state.value} ></textarea>  
                     </div>  
                   </div>
                 </div>
@@ -222,7 +262,11 @@ class App extends Component {
                   <div className="col-6 mx-auto" styles={{'background-color':'pink', height:'150px'}}>
                     <div className="jumbotron">
                         <h3>Messages Received</h3>
-                        New Messages
+                        <label name="labeluserMessage" className="col-form-label">Token</label>
+                        <input type="text" className="form-control col-12" name="userMessageInput" id="userMessageInput" value={this.state.userMessage} onChange={this.handleUserMessage} />
+                        <button type="submit" className="sendMessageButton" onClick={this.handleUserReceivedMessage}>Send</button>
+                        <textarea class="form-control" id="userMessage" rows="3" value={this.state.value} onChange={this.handleReceivedMessages}></textarea>
+                        
                     </div>
                   </div>
                 </div>
