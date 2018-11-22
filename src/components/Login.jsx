@@ -64,7 +64,7 @@ class Login extends Component {
       this.setState({formValid: this.state.emailValid && this.state.passwordValid});
   }
   
-  handleAccess = (e) => {
+/*  handleAccess = (e) => {
     
     var data = {
       'email': this.state.email,
@@ -93,9 +93,9 @@ class Login extends Component {
                     alert('error:' +  error);
                 });
       
-          this.props.history.push('/Principal');
+          
     }
-  }
+  }*/
 
 
   render(){
@@ -112,7 +112,7 @@ class Login extends Component {
                           <input type="text" className="form-control col-12" name="email" id="email" value={this.state.value} onChange={this.loginHandle} />
                           <label name="labelPassword" className="col-form-label">Password</label>
                           <input type="password" className="form-control col-12" name="password" id="password" value={this.state.value} onChange={this.loginHandle} />
-                          <button type="submit" className="btn btn-secondary" disabled={!this.state.formValid} onClick={this.handleAccess}>Login</button>
+                          <button type="submit" className="btn btn-secondary" disabled={!this.state.formValid} onClick={() => this.props.onLogin(this.state)}>Login</button>
                       </fieldset>
                     </form>
                     <div style={{float:"right"}}>

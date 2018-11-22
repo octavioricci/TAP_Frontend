@@ -37,17 +37,22 @@ class Users extends Component {
             return(
             
             <React.Fragment>
-              <div className="col-md-4" styles={{'background-color':'pink', height:'150px'}}>
-                         <h3>Users</h3>
-                            <ul>
-                              {items.map(item => (
-                                <li key={item.id}>
-                                  Name:{item.name} | Email:{item.email}
-                                </li>
-                              ))}
-                            </ul>
-                
-              </div>
+              <div className="container d-flex h-100">
+                <div className="row align-self-center w-100">
+                  <div className="col-6 mx-auto" styles={{'background-color':'pink', height:'150px'}}>
+                    <div className="jumbotron">
+                           <h3>Users</h3>
+                              <ul>
+                                {items.map(item => (
+                                  <li key={item.id}>
+                                    Name:{item.name} | Email:{item.email}
+                                  </li>
+                                ))}
+                              </ul>
+                    </div>  
+                  </div>
+                </div>
+               </div>
             </React.Fragment>
             ); 
        }
