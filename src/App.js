@@ -35,6 +35,8 @@ class App extends Component {
   
    loginHandle = (e) => {
    
+      
+     
    const name = e.target.name;
    const value = e.target.value;
    // Acá asigno en el state, el email y password que lo mandó como callback a validateFields
@@ -83,6 +85,7 @@ class App extends Component {
   
   handleAccess = (e) => {
     
+    e.preventDefault();
     var data = {
       'email': this.state.email,
       'password': this.state.password
@@ -92,19 +95,19 @@ class App extends Component {
     // Si está el email y password validado a nivel cliente, realizo la consulta a la api /users/login
     if(!e.disabled){
         
-         fetch('https://tap-octavioricci820054.codeanyapp.com/api/users/login',{
-                 method: 'POST',
-                 headers: {'Accept': 'application/json','Content-Type': 'application/json'},
-                 body: JSON.stringify(data)
-          },  {mode: 'no-cors'})
-          .then((response)=>response.text())
-            .then((responseText) => {
-                alert(responseText);
-          })
-          .catch((error)=>{
-              alert(error);
-          });
-      
+     fetch('https://tap-octavioricci820054.codeanyapp.com/api/users/login',{
+          method:'POST',
+          headers: {'Accept': 'application/json','Content-Type': 'application/json'},
+          body: JSON.stringify(data)
+         },{mode: 'no-cors'})
+          .then(response => response.text())
+            .then(text => {
+              alert(text);
+              this.setState({messages:text});
+        })
+        .catch(error => {
+          console.log(error);
+        });
       
                
      }
@@ -227,14 +230,14 @@ class App extends Component {
                 <div className="row align-self-center w-100">
                   <div className="col-6 mx-auto"> 
                     <div className="jumbotron">
-                    <form name="form1">
+                    <form name="form1" onSubmit={this.handleAccess}>
                       <fieldset>
                         <legend>Chat App</legend>
                           <label name="labelEmail" className="col-form-label">Email</label>
                           <input type="text" className="form-control col-12" name="email" id="email" value={this.state.value} onChange={this.loginHandle} />
                           <label name="labelPassword" className="col-form-label">Password</label>
                           <input type="password" className="form-control col-12" name="password" id="password" value={this.state.value} onChange={this.loginHandle} />
-                          <button type="submit" className="btn btn-secondary" disabled={!this.state.formValid} onClick={this.handleAccess}>Login</button>
+                          <button type="submit" className="btn btn-secondary" disabled={!this.state.formValid}>Login</button>
                       </fieldset>
                     </form>
                     <div style={{float:"right"}}>
