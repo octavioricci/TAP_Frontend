@@ -29,7 +29,7 @@ class App extends Component {
         message:'',
         userMessage:'',
         receivedMessages:'',
-        usersOnline:''
+        usersOnline:[]
       }
   }
   
@@ -206,9 +206,10 @@ class App extends Component {
                  method: 'GET',
                  headers: {'Accept': 'application/json','Content-Type': 'application/json'},
                   })
-                    .then((response)=>response.text())
+                    .then((response)=>response.json())
                       .then((responseText) => {
-                          alert(responseText);
+                          this.setState({usersOnline:responseText});
+                          //alert(responseText);
                          
                     })
                     .catch((error)=>{
@@ -255,7 +256,11 @@ class App extends Component {
                     <div className="jumbotron">
                            <h3>Users</h3>
                            <button type="submit" className="usersOnlineButton" onClick={this.handleUsersOnline}>View Users Online</button>
-                           <textarea class="form-control" id="usersOnline" rows="3" value={this.state.value} ></textarea>  
+                           <ul>
+                            {this.state.usersOnline.map(user => <li key={user._id}> 
+                                                                  {user.email}
+                                                               </li>)}  
+                           </ul>
                     </div>  
                   </div>
                 </div>
