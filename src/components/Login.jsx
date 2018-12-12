@@ -6,6 +6,7 @@ class Login extends Component {
   constructor(props){
     super(props);
       this.state = {
+       
         email:"",
         password:"",
         formErrors: {email:'',password:''},
@@ -64,7 +65,8 @@ class Login extends Component {
       this.setState({formValid: this.state.emailValid && this.state.passwordValid});
   }
   
-/*  handleAccess = (e) => {
+  /*
+  handleAccess = (e) => {
     
     var data = {
       'email': this.state.email,
@@ -105,14 +107,14 @@ class Login extends Component {
                 <div className="row align-self-center w-100">
                   <div className="col-6 mx-auto"> 
                     <div className="jumbotron">
-                    <form name="form1">
+                    <form name="form1" onSubmit={(e) => this.props.onAccess(e)}>
                       <fieldset>
                         <legend>Chat App</legend>
                           <label name="labelEmail" className="col-form-label">Email</label>
-                          <input type="text" className="form-control col-12" name="email" id="email" value={this.state.value} onChange={this.loginHandle} />
+                          <input type="text" className="form-control col-12" name="email" id="email" value={this.props.email} onChange={(e) => this.props.fieldChecker(e)} />
                           <label name="labelPassword" className="col-form-label">Password</label>
-                          <input type="password" className="form-control col-12" name="password" id="password" value={this.state.value} onChange={this.loginHandle} />
-                          <button type="submit" className="btn btn-secondary" disabled={!this.state.formValid} onClick={() => this.props.onLogin(this.state)}>Login</button>
+                          <input type="password" className="form-control col-12" name="password" id="password" value={this.props.password} onChange={(e) => this.props.fieldChecker(e)} />
+                          <button type="submit" className="btn btn-secondary" disabled={!this.props.validateSubmit} >Login</button>
                       </fieldset>
                     </form>
                     <div style={{float:"right"}}>
