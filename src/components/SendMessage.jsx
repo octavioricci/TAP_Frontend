@@ -1,22 +1,7 @@
 import React, { Component } from 'react';
 
 class SendMessage extends Component {
-   
-    constructor(props){
-      super(props);
-        this.state = {  
-          message:''
-        }
-      }
-    
-  
-    handleMessage = (e) => {
-      this.setState({message:e.target.value});
-      let message = this.state.message;
-      
-    }
-    
-    
+ 
     
   
     render(){
@@ -27,9 +12,11 @@ class SendMessage extends Component {
                     <div className="jumbotron">
                         <h3>Send Message</h3>
                           <div className="SenMessage">
-                            <label for="SendMessageLabel">Send Message</label>
-                            <textarea class="form-control" id="SendMessageLabel" rows="3" value={this.state.value} onChange={this.handleMessage}></textarea>
-                            <button type="submit" className="sendMessageButton" onClick={() =>(this.props.onSendMessage(this.state.message))}>Send</button>
+                           <form name="sendMessage" onSubmit={(e) => this.props.onSendMessage(e)}>
+                              To: <input type="text" className="form-control col-12" name="to" id="to" value={this.props.to} onChange={(e) => this.props.checkMessage(e)}/>
+                              Message <input type="text" className="form-control col-12" name="message" id="message" value={this.props.sendMessage} onChange={(e) => this.props.checkMessage(e)} />
+                              <button type="submit" className="sendMessageButton"  >Send Message</button>
+                            </form>
                           </div>
                     </div>
                   </div>

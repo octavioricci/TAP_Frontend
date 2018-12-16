@@ -28,21 +28,23 @@ class App2 extends Component {
         formValid:false,
         userOnline: {email:'',token:''},
         from: '',
-        to:'',
+        to:[],
         message:'',
         userMessage:'',
         receivedMessages:[],
-        usersOnline:[],
-        
-        
+        sendMessage:[],
+        onlineUsers:[],
+        isLogged:false,
+        loginPage:false
      
       }
   }
   
   
   componentDidMount(){
-    this.props.history.push('/Login');
-  }
+    this.setState({loginPage:true});
+    //this.props.history.push('/Login');
+  } 
   
        // Valido el input del login
        validateFields = (name,value) => {
@@ -81,6 +83,16 @@ class App2 extends Component {
       this.setState({formValid: this.state.emailValid && this.state.passwordValid});
   }
   
+  setMessage = (e) =>{
+    
+        const name = e.target.name;
+        const value = e.target.value;
+        
+        
+        this.setState(
+          {[name]: value});
+   }
+
   
    loginHandle = (e) => {
    
@@ -153,8 +165,13 @@ class App2 extends Component {
               userOnline.email = this.state.email;
               userOnline.token = text.token;
               this.setState({userOnline});
-              this.props.history.push('/Message');
+              this.setState({isLogged:true});
+              this.setState({loginPage:false});
+              //this.props.history.push('/Message');
+              //this.props.history.push('/Users');
               this.handleUserReceivedMessage();
+              this.handleUsersOnline();
+              
               
         })
         .catch(error => {
@@ -178,15 +195,14 @@ class App2 extends Component {
   }
   
       // Api Mensajes recibidos
-      handleSendMessage = () =>{
-        const from = this.state.from;
-        const to = this.state.to;
-        const message = this.state.message;
-
+      handleSendMessage = (e) =>{
+       
+             
+        e.preventDefault();
          var data = {
-          'from': from,
-          'to': to,
-          'message': message
+          'from': this.state.email,
+          'to': this.state.to,
+          'message': this.state.message
         } 
 
 
@@ -197,7 +213,7 @@ class App2 extends Component {
                      headers: {'Accept': 'application/json',
                                'Content-Type': 'application/json',
                                'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
-                               'Authorization':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViYWJjZGE5ZWE3MTJlMDM2MjJiNmM2MSIsImlhdCI6MTU0MjkyOTA1NiwiZXhwIjoxNTQyOTM1MDU2fQ.hkYfdyMc1iteNV2XtwuImPPC9SR-65J5nD0aIqCo46g'
+                               'Authorization': this.state.userOnline.token
                               },
 
                      body: JSON.stringify(data)
@@ -210,17 +226,7 @@ class App2 extends Component {
                         .catch((error)=>{
                             alert(error);
                         });
-                    /*.then((response) => {
-                       if(!response.ok) throw new Error(response.status);
-                    })
-                    .then((data)=> {
-                      alert(data);
-
-
-                     })
-                    .catch((error) => {
-                        alert('error:' +  error);
-                    });*/
+                   
         }
   
   
@@ -264,8 +270,8 @@ class App2 extends Component {
                     .then((response)=>response.json())
                       .then((responseText) => {
                           //const data = JSON.stringify(responseText);
-                          this.setState({usersOnline:responseText});
-                          //alert(responseText);
+                          this.setState({onlineUsers:responseText});
+                          this.props.history.push('/users')
                          
                     })
                     .catch((error)=>{
@@ -280,26 +286,31 @@ class App2 extends Component {
   
   render() {
        
+        let lPage,mess,us,sMess = null;
+        if(this.state.loginPage === true){
+          lPage=<Login onAccess={this.handleAccess} fieldChecker={this.loginHandle} validateSubmit={this.state.formValid} email={this.state.email} password={this.state.password} /> 
+        }
+        if(this.state.isLogged){
+          mess=<Message newMessages={this.handleUserReceivedMessage} messages={this.state.receivedMessages} />
+          us= <Users usersOnline={this.handleUsersOnline} users={this.state.onlineUsers} /> 
+          sMess = <SendMessage onSendMessage={this.handleSendMessage} checkMessage={this.setMessage}/>
+        }
     return (      
       
         <React.Fragment>
-        
+            
+      {/*<Route path="/Login" render={() => <Login onAccess={this.handleAccess} fieldChecker={this.loginHandle} validateSubmit={this.state.formValid} email={this.state.email} password={this.state.password} /> } /> */}
+            
+              <div>
+                 {lPage}
+                 {mess}
+                 {us}
+                 {sMess}
+              </div>
+            
            
-          <Switch>
-          
-             <Route path="/Login" render={() => <Login onAccess={this.handleAccess} fieldChecker={this.loginHandle} validateSubmit={this.state.formValid} email={this.state.email} password={this.state.password}/>}
-             />
-             <Route path="/Message" render={ () => <Message newMessages={this.handleUserReceivedMessage} messages={this.state.receivedMessages} /> } />
-              <ul>
-                {this.state.receivedMessages.map(m=> <li key={m._id}>
-                                                          {m.message}
-                                                      </li>)}
-              </ul>
-          </Switch>
         </React.Fragment> 
      
-         
-   
     );
        
   }
@@ -307,4 +318,3 @@ class App2 extends Component {
 
 
 export default withRouter(App2);
-

@@ -19,9 +19,9 @@ class Message extends Component {
                        
                         <ul>
                           {this.props.messages.map(message => <li key={message._id}>
-                              <p class="text-success">From: {message.from}</p>
-                              <p class="text-success">Message: {message.message}</p>
-                         
+                              <p className="text-success">From: {message.from}</p>
+                              <p className="text-success">Message: {message.message}</p>
+                              
                           </li>)}
                          
                         </ul>  

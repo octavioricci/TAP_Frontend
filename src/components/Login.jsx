@@ -118,9 +118,7 @@ class Login extends Component {
                       </fieldset>
                     </form>
                     <div style={{float:"right"}}>
-                      <div className="login-help ">
-                        <a href="#" className="badge badge-light">Register</a> - <a href="#" className="badge badge-light">Forgot password</a>
-                     </div>  
+                     
                    </div>
                     </div>
                   </div>
