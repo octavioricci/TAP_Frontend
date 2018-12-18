@@ -182,17 +182,7 @@ class App2 extends Component {
      }
     }
   
-  handleMessage = (e) =>{
-    this.setState({message:e.target.value});
-  }
   
-  handleFrom = (e) => {
-    this.setState({from : e.target.value});
-  }
-  
-  handleTo = (e) => {
-    this.setState({to : e.target.value});
-  }
   
       // Api Mensajes recibidos
       handleSendMessage = (e) =>{
@@ -230,15 +220,6 @@ class App2 extends Component {
         }
   
   
-         handleUserMessage = (e) => {
-              this.setState({userMessage:e.target.value});
-          }
-        
-        handleReceivedMessages = (e) => {
-          this.setState({receivedMessages: e.target.value})
-        }
-         
-         
         handleUserReceivedMessage = () => {
           
             

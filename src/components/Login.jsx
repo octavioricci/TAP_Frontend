@@ -107,7 +107,7 @@ class Login extends Component {
                 <div className="row align-self-center w-100">
                   <div className="col-6 mx-auto"> 
                     <div className="jumbotron">
-                    <form name="form1" onSubmit={(e) => this.props.onAccess(e)}>
+                    <form className="login" onSubmit={(e) => this.props.onAccess(e)}>
                       <fieldset>
                         <legend>Chat App</legend>
                           <label name="labelEmail" className="col-form-label">Email</label>
