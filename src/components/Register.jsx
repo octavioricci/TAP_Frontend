@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
 
-class Login extends Component {
+class Register extends Component {
  
   
   render(){
@@ -11,19 +11,19 @@ class Login extends Component {
                 <div className="row align-self-center w-100">
                   <div className="col-6 mx-auto"> 
                     <div className="jumbotron">
-                    <form className="login" onSubmit={(e) => this.props.onAccess(e)}>
+                    <form className="register" onSubmit={(e) => this.props.onRegister(e)}>
                       <fieldset>
-                        <legend>Chat App Login</legend>
+                        <legend>Chat App Register</legend>
+                          <label name="labelEmail" className="col-form-label">Name</label>
+                          <input type="text" className="form-control col-12" name="name" id="name" value={this.props.name} onChange={(e) => this.props.fieldChecker(e)} />
                           <label name="labelEmail" className="col-form-label">Email</label>
-                          <input type="text" className="form-control col-12" name="email" id="email" value={this.props.email} onChange={(e) => this.props.fieldChecker(e)} />
+                          <input type="text" className="form-control col-12" name="name" id="name" value={this.props.name} onChange={(e) => this.props.fieldChecker(e)} />
                           <label name="labelPassword" className="col-form-label">Password</label>
                           <input type="password" className="form-control col-12" name="password" id="password" value={this.props.password} onChange={(e) => this.props.fieldChecker(e)} />
                           <button type="submit" className="btn btn-secondary" disabled={!this.props.validateSubmit} >Login</button>
                       </fieldset>
                     </form>
-                    <div style={{float:"right"}}>
-                     <button className="badge badge-light" onClick={this.props.onRegister}>Register</button>
-                   </div>
+                      
                     </div>
                   </div>
                 </div>
@@ -35,5 +35,4 @@ class Login extends Component {
 }
   
   
-export default Login;
-
+export default Register;

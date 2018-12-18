@@ -7,6 +7,7 @@ import NavBar from "./components/NavBar";
 import Message from "./components/Message";
 import SendMessage from "./components/SendMessage";
 import Users from "./components/Users";
+import Register from "./components/Register";
 import logo from './logo.svg';
 import './App.css';
 
@@ -35,7 +36,8 @@ class App2 extends Component {
         sendMessage:[],
         onlineUsers:[],
         isLogged:false,
-        loginPage:false
+        loginPage:false,
+        registerPage:false
      
       }
   }
@@ -93,6 +95,9 @@ class App2 extends Component {
           {[name]: value});
    }
 
+  handleAccessRegister = () => {
+    this.setState({loginPage:false,registerPage:true});
+  }
   
    loginHandle = (e) => {
    
@@ -267,10 +272,14 @@ class App2 extends Component {
   
   render() {
        
-        let lPage,mess,us,sMess = null;
+        let lPage,mess,us,sMess,register = null;
         if(this.state.loginPage === true){
-          lPage=<Login onAccess={this.handleAccess} fieldChecker={this.loginHandle} validateSubmit={this.state.formValid} email={this.state.email} password={this.state.password} /> 
+          lPage=<Login onAccess={this.handleAccess} fieldChecker={this.loginHandle} validateSubmit={this.state.formValid} email={this.state.email} password={this.state.password} onRegister={this.handleAccessRegister}/> 
         }
+        else if(this.state.loginPage===false && this.state.registerPage===true){
+          register=<Register />
+        }
+          
         if(this.state.isLogged){
           mess=<Message newMessages={this.handleUserReceivedMessage} messages={this.state.receivedMessages} />
           us= <Users usersOnline={this.handleUsersOnline} users={this.state.onlineUsers} /> 
@@ -287,6 +296,7 @@ class App2 extends Component {
                  {mess}
                  {us}
                  {sMess}
+                 {register}
               </div>
             
            
