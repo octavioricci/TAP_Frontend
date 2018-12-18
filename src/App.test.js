@@ -16,14 +16,16 @@ it('shallows without crashing', () => {
 });*/
 
 
-// Shallo permite testar de forma aislada el componente, sin incluir los hijos
+// Shallow permite testar de forma aislada el componente, sin incluir los hijos
 describe('<Login />',() => {
   it('should shallow',() => {
-    const Wrapper = shallow(<Login />)
+    const Wrapper = shallow(<Login />);
     expect(Wrapper);
-  })
-})
+  });
+});
 
+
+// Testeo que exista el componente formulario
 describe('Testing Login Component',() => {
   let wrapper;
   beforeEach(() => {
@@ -33,5 +35,23 @@ describe('Testing Login Component',() => {
   it('includes a form', () => {
     expect(wrapper.find('form.login').exists()).toBe(true)
   });
-})
+});
+ 
+ // Testo que existan los input email y password
+describe('Testing more Login components', () => {
+    let wrapper;
+    beforeEach(() => {
+      wrapper = shallow(<Login />);
+    });
+    
+    it('Render email input', () => {
+      expect(wrapper.find('#email').length).toEqual(1)
+    });
+  
+    it('Render password input', () => {
+      expect(wrapper.find('#password').length).toEqual(1)
+    });
+});
+  
+  
 
