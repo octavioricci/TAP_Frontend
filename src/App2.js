@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, withRouter , Link, Switch } from 'react-router-dom';
 import Navigation from "./components/Navigation";
+import axios from 'axios'
 import Login from "./components/Login";
 import Principal from "./components/Principal";
 import NavBar from "./components/NavBar";
@@ -37,8 +38,8 @@ class App2 extends Component {
         onlineUsers:[],
         isLogged:false,
         loginPage:false,
-        registerPage:false
-     
+        registerPage:false,
+        registerName:''
       }
   }
   
@@ -81,6 +82,11 @@ class App2 extends Component {
 
       }
   
+   handlenameRegisterChecker = (e) => {
+     this.setState({registerName:e.target.value});
+   }    
+       
+       
   validateForm = () => {
       this.setState({formValid: this.state.emailValid && this.state.passwordValid});
   }
@@ -96,6 +102,7 @@ class App2 extends Component {
    }
 
   handleAccessRegister = () => {
+    this.setState({name:'',email:'',password:''})
     this.setState({loginPage:false,registerPage:true});
   }
   
@@ -147,7 +154,15 @@ class App2 extends Component {
       this.setState({formValid: this.state.emailValid && this.state.passwordValid});
   }
   
+ 
+  
+  
   handleAccess = (e) => {
+    
+    
+    
+    
+    const answer='';
     
     e.preventDefault();
     var data = {
@@ -158,7 +173,7 @@ class App2 extends Component {
         
     // Si está el email y password validado a nivel cliente, realizo la consulta a la api /users/login
     if(!e.disabled){
-        
+    
      fetch('https://tap-octavioricci820054.codeanyapp.com/api/users/login',{
           method:'POST',
           headers: {'Accept': 'application/json','Content-Type': 'application/json'},
@@ -166,6 +181,7 @@ class App2 extends Component {
          },{mode: 'no-cors'})
           .then(response => response.json())
             .then(text => {
+              console.log(text);
               const userOnline = {...this.state.userOnline};
               userOnline.email = this.state.email;
               userOnline.token = text.token;
@@ -176,17 +192,15 @@ class App2 extends Component {
               //this.props.history.push('/Users');
               this.handleUserReceivedMessage();
               this.handleUsersOnline();
-              
-              
-        })
+        }) 
         .catch(error => {
           console.log(error);
         });
-      
+     
                
      }
-    }
-  
+    } 
+ 
   
   
       // Api Mensajes recibidos
@@ -266,8 +280,46 @@ class App2 extends Component {
           
             
           }
-        
-    
+          
+          
+          
+          
+           handleRegister = (e) =>{
+            
+             const that=this;
+             e.preventDefault();
+            var data = {
+              'name': this.state.registerName,
+              'password': this.state.password,
+              'email': this.state.email
+
+            } 
+            fetch('https://tap-octavioricci820054.codeanyapp.com/api/users/register',{
+                    method:'POST',
+                    headers: {'Accept': 'application/json','Content-Type': 'application/json'},
+                    body: JSON.stringify(data)
+                   },{mode: 'no-cors'})
+                .then(function(res) {
+                    if (res.status==200) {
+                        console.log(res);
+                        alert("Usuario dado de alta con éxito");
+                        that.setState({registerPage:false});
+                        that.setState({loginPage:true});
+                    } 
+                    else if (res.status == 201) {
+                        alert("Usuario existente, debe loguearse");
+                        that.setState({registerPage:false});
+                        that.setState({loginPage:true});
+                        
+                        
+                    }
+                },function(e) {
+                    alert("Hubo un error inesperado!");
+                  });
+          
+          } //Cierre handleRegister
+          
+     
   
   
   render() {
@@ -277,13 +329,13 @@ class App2 extends Component {
           lPage=<Login onAccess={this.handleAccess} fieldChecker={this.loginHandle} validateSubmit={this.state.formValid} email={this.state.email} password={this.state.password} onRegister={this.handleAccessRegister}/> 
         }
         else if(this.state.loginPage===false && this.state.registerPage===true){
-          register=<Register />
+          register=<Register onRegister={this.handleRegister} nameRegisterfieldChecker={this.handlenameRegisterChecker} fieldChecker={this.loginHandle} email={this.state.email} password={this.state.password} validateSubmit={this.state.formValid}/>
         }
           
         if(this.state.isLogged){
           mess=<Message newMessages={this.handleUserReceivedMessage} messages={this.state.receivedMessages} />
           us= <Users usersOnline={this.handleUsersOnline} users={this.state.onlineUsers} /> 
-          sMess = <SendMessage onSendMessage={this.handleSendMessage} checkMessage={this.setMessage}/>
+          sMess = <SendMessage onSendMessage={this.handleSendMessage} checkMessage={this.setMessage} />
         }
     return (      
       

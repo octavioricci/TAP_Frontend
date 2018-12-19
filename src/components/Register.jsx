@@ -15,12 +15,12 @@ class Register extends Component {
                       <fieldset>
                         <legend>Chat App Register</legend>
                           <label name="labelEmail" className="col-form-label">Name</label>
-                          <input type="text" className="form-control col-12" name="name" id="name" value={this.props.name} onChange={(e) => this.props.fieldChecker(e)} />
+                          <input type="text" className="form-control col-12" name="name" id="name" value={this.props.name} onChange={(e) => this.props.nameRegisterfieldChecker(e)} />
                           <label name="labelEmail" className="col-form-label">Email</label>
-                          <input type="text" className="form-control col-12" name="name" id="name" value={this.props.name} onChange={(e) => this.props.fieldChecker(e)} />
+                          <input type="text" className="form-control col-12" name="email" id="name" value={this.props.name} onChange={(e) => this.props.fieldChecker(e)} />
                           <label name="labelPassword" className="col-form-label">Password</label>
                           <input type="password" className="form-control col-12" name="password" id="password" value={this.props.password} onChange={(e) => this.props.fieldChecker(e)} />
-                          <button type="submit" className="btn btn-secondary" disabled={!this.props.validateSubmit} >Login</button>
+                          <button type="submit" className="btn btn-secondary" disabled={!this.props.validateSubmit}>Register</button>
                       </fieldset>
                     </form>
                       
